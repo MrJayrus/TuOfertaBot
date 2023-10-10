@@ -23,11 +23,21 @@ def send_welcome(message):
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
     if message.text == "VENDER":
-        bot.reply_to(message, "Has elegido VENDER")
+        # Leer las categorías de ventas del archivo "categorias.txt"
+        with open("categorias.txt", "r") as f:
+            categorias = f.read()
+
+        # Enviar las categorías de ventas al usuario
+        bot.reply_to(message, f"Las categorías de ventas actuales son: {categorias}")
     elif message.text == "COMPRAR":
-        bot.reply_to(message, "Has elegido COMPRAR")
+        # Leer las categorías de compra del archivo "categorias.txt"
+        with open("categorias.txt", "r") as f:
+            categorias = f.read()
+
+        # Enviar las categorías de compra al usuario
+        bot.reply_to(message, f"Las categorías de compra actuales son: {categorias}")
     else:
-        bot.reply_to(message, "No entiendo lo que quieres decir. Por favor, elige una opción.")
+        bot.reply_to(message, "Por favor, elige una opción válida.")
 
 # Iniciar el bot
 bot.polling()
