@@ -8,7 +8,7 @@ api_file = '../DB/bot_api.txt'
 
 # Inicializar el bot
 with open(api_file, "r") as f:
-cbapi = f.read()
+bapi = f.read()
 bot = telebot.TeleBot(bapi)
 
 # Manejar el comando /start
