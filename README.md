@@ -7,4 +7,4 @@ Repositorio en desarrollo del bot "TuOferta". Probado en Jupyter Notebook.
 
 `!cd TuOfertaBot && pip install -r requirements.txt`   ------->     *PARA INSTALAR LOS PAQUETES NECESARIOS POR EL BOT*
 
-`!python TuOfertaBot/bot-tuoferta.py`    ------->    *PARA INICIAR EL BOT EN LINUX*
+`!python TuOfertaBot/bot-tuoferta.py`    ------->    *PARA INICIAR EL BOT*
