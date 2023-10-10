@@ -3,8 +3,8 @@ import os
 import json
 
 # Directorios y archivos a trabajar
-categorias_path = '../DB/categorias.txt'
-api_file = '../DB/bot_api.txt'
+categorias_path = './DB/categorias.txt'
+api_file = './DB/bot_api.txt'
 
 # Inicializar el bot
 with open(api_file, "r") as f:
