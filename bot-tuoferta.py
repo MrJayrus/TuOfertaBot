@@ -8,8 +8,8 @@ api_file = '../DB/bot_api.txt'
 
 # Inicializar el bot
 with open(api_file, "r") as f:
-bapi = f.read()
-bot = telebot.TeleBot(bapi)
+    cbapi = f.read()
+bot = telebot.TeleBot(cbapi)
 
 # Manejar el comando /start
 @bot.message_handler(commands=['start'])
