@@ -7,7 +7,7 @@ categorias_path = '../DB/categorias.txt'
 api_file = '../DB/bot_api.txt'
 
 # Inicializar el bot
-open(api_file, "r") as f:
+with open(api_file, "r") as f:
 cbapi = f.read()
 bot = telebot.TeleBot(bapi)
 
