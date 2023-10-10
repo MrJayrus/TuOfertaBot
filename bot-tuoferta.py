@@ -78,5 +78,14 @@ def buscar_ventas_por_categoria(message):
     else:
         bot.reply_to(message, f"No se encontraron objetos en la categoría '{categoria}'.")
 
+# Función para detener el bot desde el chat
+def stop_bot():
+    bot.stop_polling()
+
+# Comando para detener el bot "stp"
+@bot.message_handler(commands=['stp'])
+def handle_stop(message):
+    stop_bot()
+
 # Iniciar el bot
 bot.polling()
