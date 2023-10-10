@@ -1,5 +1,6 @@
 import telebot
 import os
+import json
 
 # Inicializar el bot
 bot = telebot.TeleBot(os.environ['BOT_API'])
@@ -23,12 +24,11 @@ def send_welcome(message):
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
     if message.text == "VENDER":
-        # Leer las categorías de ventas del archivo "categorias.txt"
-        with open("categorias.txt", "r") as f:
-            categorias = f.read()
+        # Enviar mensaje para pedir la categoría
+        bot.reply_to(message, "Por favor, escribe la categoría que deseas buscar:")
 
-        # Enviar las categorías de ventas al usuario
-        bot.reply_to(message, f"Las categorías de ventas actuales son: {categorias}")
+        # Esperar la respuesta del usuario
+        bot.register_next_step_handler(message, buscar_ventas_por_categoria)
     elif message.text == "COMPRAR":
         # Leer las categorías de compra del archivo "categorias.txt"
         with open("categorias.txt", "r") as f:
@@ -38,6 +38,39 @@ def handle_message(message):
         bot.reply_to(message, f"Las categorías de compra actuales son: {categorias}")
     else:
         bot.reply_to(message, "Por favor, elige una opción válida.")
+
+# Buscar las ventas por categoría
+def buscar_ventas_por_categoria(message):
+    # Leer la categoría ingresada por el usuario
+    categoria = message.text
+
+    # Leer los objetos de ventas del archivo "ventas.json"
+    with open("ventas.json", "r") as f:
+        ventas = json.load(f)
+
+    # Crear una lista de objetos de ventas con su precio al lado y ordenados de menor a mayor precio
+    objetos_en_categoria = [f"{objeto['name']}: {objeto['price']}" for objeto in sorted(ventas, key=lambda x: x['price']) if objeto["mode"] == categoria]
+
+    # Enviar los primeros 10 objetos encontrados al usuario, enumerados y debajo de ellos 10 botones con los números del 1 al 10 para que el usuario seleccione el objeto que desee ver más información
+    if len(objetos_en_categoria) > 0:
+        # Crear una lista de los primeros 10 objetos de ventas
+        primeros_10_objetos = objetos_en_categoria[:10]
+
+        # Crear una lista de botones con los números del 1 al 10
+        botones = [telebot.types.KeyboardButton(str(i)) for i in range(1, 11)]
+
+        # Crear una lista de filas de botones con 2 botones por fila
+        filas_de_botones = [botones[i:i+2] for i in range(0, len(botones), 2)]
+
+        # Crear un objeto de teclado personalizado con las filas de botones
+        markup = telebot.types.ReplyKeyboardMarkup(row_width=2)
+        for fila in filas_de_botones:
+            markup.add(*fila)
+
+        # Enviar los primeros 10 objetos de ventas al usuario, enumerados y debajo de ellos 10 botones con los números del 1 al 10 para que el usuario seleccione el objeto que desee ver más información
+        bot.reply_to(message, f"Los primeros 10 objetos en la categoría '{categoria}' son:\n" + "\n".join([f"{i+1}. {objeto}" for i, objeto in enumerate(primeros_10_objetos)]), reply_markup=markup)
+    else:
+        bot.reply_to(message, f"No se encontraron objetos en la categoría '{categoria}'.")
 
 # Iniciar el bot
 bot.polling()
